@@ -1,7 +1,8 @@
-Please summarize the following content according to these guidelines:
+Please rewrite the following content according to these guidelines:
 
-The summary must be concise, not exceeding 250 words.
-Utilize advanced and sophisticated GRE-level vocabulary.
-Ensure the summary retains the core context and meaning of the original content.
-Prioritize key information while omitting any trivial or redundant details."
-Input:
+1. The content must be concise, between 270 and 320 words.
+2. Utilize advanced and sophisticated GRE-level vocabulary.
+3. Prioritize key information while omitting any trivial or redundant details.
+4. Out put content can be used by active speaker
+    
+Input: 
