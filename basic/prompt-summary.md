@@ -1,8 +1,9 @@
-Please rewrite the following content according to these guidelines:
+Please rewrite the following content according to the rules below:
 
-1. The content must be concise, between 270 and 320 words.
-2. Utilize advanced and sophisticated GRE-level vocabulary.
-3. Prioritize key information while omitting any trivial or redundant details.
-4. Out put content can be used by active speaker
-    
-Input: 
+The word length of the revised content must not exceed 40% of the input text.
+Employ advanced vocabulary, comparable to the GRE level.
+Incorporate phrasal verbs where applicable.
+Ensure the content is free from plagiarism.
+Out put content can be used by active speaker
+
+Input text:
