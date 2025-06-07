@@ -1,9 +1,0 @@
-Please revise the following text by performing the following steps:
-
-1. Identify and correct grammatical errors within each dialogue.
-2. Review the text for clarity, avoiding overly complex sentence structures.
-3. Ensure the text meets a standard equivalent to IELTS Band 9 in terms of clarity and coherence.
-4. Eliminate unnecessary repetitions.
-5. Update the content with advanced GRE-level vocabulary while maintaining the original context and meaning.
-
-input: 
