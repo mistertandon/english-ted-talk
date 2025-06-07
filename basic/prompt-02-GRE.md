@@ -1,2 +1,5 @@
-Incorporate the following directives to refine the provided text and deliver an enhanced iteration: Substitute existing words with appropriate phrasal verbs where feasible to elevate the text’s dynamism. Replace rudimentary English vocabulary with advanced GRE-level lexicon to augment the text’s sophistication and precision.
+Please follow these steps for the given text and provide a revised version: replace existing words with
+1. phrasal verb wherever applicable
+2. Replace simple English words with GRE advance vocabulary
 
+Input text: 
