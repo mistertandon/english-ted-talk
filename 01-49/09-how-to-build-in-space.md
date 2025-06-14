@@ -1,6 +1,5 @@
 # How to Build in Space — for Life on Earth | Ariel Ekblaw
 
-
 A professor once **brought up** the question, *“Why pour resources into space exploration when Earth grapples with pressing crises?”* It’s a **legitimate** query, but I contend the rationale is unequivocal: space exploration **spurs** technological breakthroughs that **redound to the benefit of** terrestrial life.
 
 My **fascination** with flight is deeply **ingrained**—both of my parents served as Air Force aviators, and encountering microgravity 14 years ago **set me off on** my aerospace odyssey. Space programs have already **churned out** groundbreaking innovations: modern computing stemmed from Apollo, LASIK eye surgery **emerged from** the ISS, and now, biotechnology and solar energy **are taking off** in orbit.
