@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sharing Books, Less Lonely</title>
+<meta name="description" content="Rebecca Toh's TED talk on Singapore's shared community library — an annotated reading edition with delivery cues, conditionals and vocabulary.">
+<script>
+  try { var t = localStorage.getItem('sl-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f7f2e8;
+    --paper-2: #efe7d6;
+    --card: #fbf8f1;
+    --ink: #2a221c;
+    --ink-2: #6b5d50;
+    --rule: #d9cdb8;
+    --accent: #b5502b;
+    --accent-ink: #fff8f0;
+    --green: #2f6153;
+    --wood: #8a5a36;
+    --cA: #2f7d6d;  /* zero */
+    --cB: #2e6bb0;  /* first */
+    --cC: #7b52b8;  /* second */
+    --cD: #b5502b;  /* third */
+    --cE: #a8730f;  /* mixed */
+    --cF: #b23a6a;  /* inversion */
+    --tint: 13%;
+    --fs: 1.18rem;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+    --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #181411; --paper-2: #221c17; --card: #1e1915;
+      --ink: #ece3d6; --ink-2: #a8998a; --rule: #3a3029;
+      --accent: #e27a52; --accent-ink: #1a120d; --green: #7cbfa9; --wood: #c48a5c;
+      --cA: #5cc0aa; --cB: #6ea5e8; --cC: #b293ea; --cD: #e8865f; --cE: #e0b04a; --cF: #ea7fa9;
+      --tint: 18%;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #181411; --paper-2: #221c17; --card: #1e1915;
+    --ink: #ece3d6; --ink-2: #a8998a; --rule: #3a3029;
+    --accent: #e27a52; --accent-ink: #1a120d; --green: #7cbfa9; --wood: #c48a5c;
+    --cA: #5cc0aa; --cB: #6ea5e8; --cC: #b293ea; --cD: #e8865f; --cE: #e0b04a; --cF: #ea7fa9;
+    --tint: 18%;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--serif); font-size: var(--fs); line-height: 1.72;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  ::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+  /* ───────── Toolbar ───────── */
+  .bar {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--sans); font-size: 13px;
+  }
+  .bar-in { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 12px; }
+  .bar-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; color: var(--ink-2); }
+  .bar-title b { color: var(--ink); font-weight: 600; }
+  .controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .tg, .icon-btn {
+    font: 600 12px/1 var(--sans); color: var(--ink-2); background: transparent;
+    border: 1px solid var(--rule); border-radius: 999px; padding: 7px 11px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; transition: all .15s;
+  }
+  .tg:hover, .icon-btn:hover { color: var(--ink); border-color: var(--ink-2); }
+  .tg[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .tg .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: .5; }
+  .tg[aria-pressed="true"] .dot { opacity: 1; background: var(--accent); }
+  .icon-btn { padding: 7px 9px; min-width: 32px; justify-content: center; }
+  .progress { height: 3px; background: transparent; }
+  .progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--cE)); }
+  @media (max-width: 640px) {
+    .bar-title { display: none; }
+    .controls { justify-content: center; width: 100%; }
+    .tg { padding: 7px 9px; }
+  }
+
+  /* ───────── Hero ───────── */
+  .hero { max-width: 1180px; margin: 0 auto; padding: 72px 16px 40px; text-align: center; }
+  .eyebrow { font: 600 12px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); }
+  .eyebrow .sep { color: var(--rule); margin: 0 .6em; }
+  h1 {
+    font-family: var(--display); font-weight: 400; font-variation-settings: "opsz" 144;
+    font-size: clamp(2.6rem, 7.4vw, 5.6rem); line-height: 1.0; letter-spacing: -.02em;
+    margin: 22px auto 18px; max-width: 14ch; text-wrap: balance;
+  }
+  h1 em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .dek { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: var(--ink-2); max-width: 36em; margin: 0 auto; font-style: italic; text-wrap: pretty; }
+  .meta { margin-top: 26px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; font: 500 13px/1 var(--sans); color: var(--ink-2); }
+  .meta span, .meta a { border: 1px solid var(--rule); border-radius: 999px; padding: 8px 14px; text-decoration: none; }
+  .meta a { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+  .meta a:hover { filter: brightness(1.08); }
+
+  /* bookshelf illustration: 180 spines */
+  .shelfwall { max-width: 920px; margin: 54px auto 0; padding: 14px 14px 0; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 14px; }
+  .shelf-row { display: flex; align-items: flex-end; gap: 2px; height: 74px; border-bottom: 7px solid var(--wood); padding: 0 4px; margin-bottom: 14px; overflow: hidden; }
+  .spine { flex: var(--w) 1 0; min-width: 0; height: var(--h); border-radius: 2px 2px 0 0; background: var(--c); position: relative; transform-origin: bottom; animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d); }
+  .spine::after { content: ""; position: absolute; left: 18%; right: 18%; top: 18%; height: 2px; background: rgba(255,255,255,.35); }
+  .spine.lean { transform: rotate(-6deg); }
+  @keyframes rise { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .spine { animation: none; } }
+  .shelf-cap { font: 500 12px/1.4 var(--sans); color: var(--ink-2); padding: 0 0 14px; letter-spacing: .02em; }
+
+  .stats { max-width: 920px; margin: 28px auto 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
+  .stat { background: var(--paper); padding: 18px 12px; text-align: center; }
+  .stat b { display: block; font: 400 2rem/1 var(--display); color: var(--ink); font-variation-settings: "opsz" 144; }
+  .stat span { display: block; margin-top: 8px; font: 500 11.5px/1.35 var(--sans); color: var(--ink-2); letter-spacing: .02em; }
+
+  /* ───────── Layout ───────── */
+  .layout { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: 1fr; }
+  @media (min-width: 1100px) { .layout { grid-template-columns: 220px minmax(0, 700px) 1fr; gap: 48px; } }
+  .toc { display: none; }
+  @media (min-width: 1100px) {
+    .toc { display: block; position: sticky; top: 90px; align-self: start; font-family: var(--sans); font-size: 13px; padding-top: 40px; }
+    .toc h4 { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 14px; font-weight: 600; }
+    .toc ol { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--rule); }
+    .toc a { display: block; padding: 7px 0 7px 14px; margin-left: -1px; text-decoration: none; color: var(--ink-2); border-left: 2px solid transparent; line-height: 1.35; transition: color .15s, border-color .15s; }
+    .toc a small { display: block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+    .toc a:hover { color: var(--ink); }
+    .toc a.on { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+  }
+  main { min-width: 0; }
+
+  /* ───────── Key / legend ───────── */
+  .key { margin: 48px 0 8px; border: 1px solid var(--rule); border-radius: 14px; background: var(--card); font-family: var(--sans); font-size: 13.5px; line-height: 1.5; }
+  .key summary { cursor: pointer; padding: 16px 20px; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .key summary::-webkit-details-marker { display: none; }
+  .key summary::after { content: "+"; font-size: 20px; font-weight: 400; color: var(--ink-2); }
+  .key[open] summary::after { content: "–"; }
+  .key-body { padding: 0 20px 20px; display: grid; gap: 18px; }
+  .key h5 { margin: 0 0 8px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; }
+  .key p { margin: 0; color: var(--ink-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .legend-chip { font: 600 12px/1 var(--sans); border: 1px solid color-mix(in srgb, var(--cc) 45%, transparent); background: color-mix(in srgb, var(--cc) var(--tint), transparent); color: var(--ink); border-radius: 999px; padding: 7px 11px; cursor: pointer; display: inline-flex; gap: 7px; align-items: center; }
+  .legend-chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--cc); }
+  .legend-chip small { font-weight: 500; color: var(--ink-2); }
+  .legend-chip:hover { border-color: var(--cc); }
+  .hint { font-size: 12px; color: var(--ink-2); margin-top: 8px !important; }
+
+  /* ───────── Chapters & prose ───────── */
+  .chapter { padding-top: 56px; }
+  .ch-head { margin: 0 0 28px; }
+  .ch-num { font: 600 11.5px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 12px; }
+  .ch-num::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  .ch-head h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 2.7rem); line-height: 1.08; letter-spacing: -.015em; margin: 14px 0 0; font-variation-settings: "opsz" 120; text-wrap: balance; }
+  .ch-head h2 em { color: var(--accent); }
+  .prose p { margin: 0 0 1.15em; text-wrap: pretty; hyphens: auto; }
+  .prose strong { font-weight: 600; }
+
+  .pull { margin: 2em 0; padding: 0; position: relative; font: italic 400 clamp(1.45rem, 3.4vw, 1.95rem)/1.3 var(--display); letter-spacing: -.01em; color: var(--ink); text-wrap: balance; font-variation-settings: "opsz" 72; }
+  .pull::before { content: "“"; display: block; font: 400 5rem/0.6 var(--display); color: var(--accent); height: .45em; }
+  .pull footer { margin-top: 12px; font: 500 12px/1 var(--sans); font-style: normal; color: var(--ink-2); letter-spacing: .08em; text-transform: uppercase; }
+
+  .moment { text-align: center; margin: 2.2em 0; font: 400 clamp(1.6rem, 4vw, 2.3rem)/1.2 var(--display); letter-spacing: -.015em; }
+  .moment .cue { font-size: 11px; vertical-align: middle; }
+
+  .shelf-card { position: relative; margin: 1.6em 0; padding: 22px 24px 8px; background: var(--card); border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 1px 0 var(--rule), 0 12px 30px -24px rgba(60,30,10,.4); }
+  .shelf-card::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--wood); border-radius: 0 0 12px 12px; opacity: .85; }
+  .shelf-label { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font: 600 11.5px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--wood); }
+  .mini { display: inline-flex; gap: 2px; align-items: flex-end; height: 18px; }
+  .mini i { width: 4px; border-radius: 1px; background: var(--c); height: var(--h); }
+
+  /* delivery cues */
+  .cue { display: inline-block; font: 600 .6em/1 var(--sans); letter-spacing: .02em; color: var(--ink-2); border: 1px dashed color-mix(in srgb, var(--ink-2) 55%, transparent); border-radius: 999px; padding: .38em .62em .34em; margin: 0 .25em; vertical-align: .22em; white-space: nowrap; user-select: none; }
+  .cue::before { margin-right: .4em; letter-spacing: 0; }
+  .cue.sp::before { content: "⏸"; }
+  .cue.lp::before { content: "⏸⏸"; }
+  .cue.beat::before { content: "●"; font-size: .8em; }
+  .cue.slide::before { content: "▣"; }
+  .cue.laugh::before { content: "☺"; }
+  .cue.emph::before { content: "▲"; font-size: .85em; }
+  .cue.slow::before { content: "∿"; }
+  .cue.idiom::before { content: "❝"; }
+  .cue.idiom { border-style: solid; color: var(--green); border-color: color-mix(in srgb, var(--green) 50%, transparent); }
+  .cue.laugh { border-style: solid; color: var(--cE); border-color: color-mix(in srgb, var(--cE) 50%, transparent); }
+  .cue.emph { border-style: solid; color: var(--accent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
+  body.no-cues .cue { display: none; }
+
+  /* conditionals */
+  .cond { --cc: var(--ink-2); background: color-mix(in srgb, var(--cc) var(--tint), transparent); box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--cc) 70%, transparent); border-radius: 3px; padding: .05em .15em; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background .25s, opacity .25s, box-shadow .25s; }
+  [data-c="A"] { --cc: var(--cA); } [data-c="B"] { --cc: var(--cB); } [data-c="C"] { --cc: var(--cC); }
+  [data-c="D"] { --cc: var(--cD); } [data-c="E"] { --cc: var(--cE); } [data-c="F"] { --cc: var(--cF); }
+  .ctag { display: inline-block; font: 700 .58em/1.25 var(--sans); letter-spacing: .01em; color: #fff; background: var(--cc); border-radius: 4px; padding: .3em .55em; margin-right: .45em; vertical-align: .2em; max-width: 100%; white-space: normal; font-style: normal; user-select: none; }
+  .ctag.solo { margin: 0 0 0 .2em; }
+  :root[data-theme="dark"] .ctag { color: #14100d; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ctag { color: #14100d; } }
+  .ctag small { font-weight: 500; opacity: .85; margin-left: .35em; text-transform: none; letter-spacing: 0; }
+  body.no-grammar .cond { background: none; box-shadow: none; padding: 0; }
+  body.no-grammar .ctag { display: none; }
+  body.focusing .cond:not(.focus) { background: none; box-shadow: none; opacity: .55; }
+  body.focusing .cond:not(.focus) .ctag { opacity: .3; }
+  .flash { animation: flash 1.6s ease-out; }
+  @keyframes flash { 0%, 30% { outline: 3px solid var(--accent); outline-offset: 4px; } 100% { outline: 3px solid transparent; outline-offset: 10px; } }
+
+  /* vocabulary */
+  .v { font-weight: 600; cursor: help; text-decoration: underline dotted color-mix(in srgb, var(--accent) 70%, transparent); text-decoration-thickness: 2px; text-underline-offset: .22em; border-radius: 3px; outline: none; }
+  .v.idiom { text-decoration-color: color-mix(in srgb, var(--green) 80%, transparent); text-decoration-style: wavy; text-decoration-thickness: 1.5px; }
+  .v:hover, .v:focus-visible { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .v.idiom:hover, .v.idiom:focus-visible { background: color-mix(in srgb, var(--green) 16%, transparent); }
+  .v.nb { font-weight: inherit; }
+  body.no-vocab .v { text-decoration: none; cursor: text; background: none; }
+
+  .tip { position: fixed; z-index: 80; max-width: 300px; background: var(--ink); color: var(--paper); border-radius: 10px; padding: 12px 14px 13px; font: 400 13.5px/1.45 var(--sans); box-shadow: 0 14px 40px -12px rgba(0,0,0,.45); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .14s, transform .14s; }
+  .tip.show { opacity: 1; transform: none; }
+  .tip b { display: block; font: 600 15px/1.25 var(--display); margin-bottom: 2px; }
+  .tip em { display: block; font-style: normal; font: 700 10px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--cE); margin-bottom: 7px; }
+
+  /* ───────── Finale ───────── */
+  .finale { margin: 64px 0 0; padding: 56px 28px; background: var(--ink); color: var(--paper); border-radius: 18px; text-align: center; position: relative; overflow: hidden; }
+  .finale p.big { font: italic 400 clamp(1.5rem, 3.8vw, 2.15rem)/1.3 var(--display); margin: 0 auto 26px; max-width: 26ch; text-wrap: balance; }
+  .finale p.close { font-size: 1.05em; margin: 0 auto; max-width: 32em; opacity: .9; }
+  .finale .v { color: inherit; }
+  .finale .end { margin-top: 28px; font-size: 24px; color: var(--accent); }
+
+  /* ───────── Study sections ───────── */
+  .study { padding-top: 72px; }
+  .study > header { margin-bottom: 22px; }
+  .study h3 { font: 400 clamp(1.7rem, 4vw, 2.3rem)/1.1 var(--display); margin: 12px 0 8px; letter-spacing: -.01em; }
+  .study .sub { font-family: var(--sans); font-size: 14px; color: var(--ink-2); margin: 0; }
+  .cond-table { display: grid; gap: 12px; }
+  .ct-row { border: 1px solid var(--rule); border-left: 5px solid var(--cc); border-radius: 10px; background: var(--card); padding: 16px 18px; font-family: var(--sans); font-size: 13.5px; }
+  .ct-top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; justify-content: space-between; }
+  .ct-top b { font: 600 17px/1.2 var(--display); }
+  .ct-top code { font: 500 12.5px/1.4 ui-monospace, "SF Mono", Menlo, monospace; color: var(--cc); background: color-mix(in srgb, var(--cc) var(--tint), transparent); padding: 3px 7px; border-radius: 5px; }
+  .ct-use { color: var(--ink-2); margin: 6px 0 10px; }
+  .ct-row ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .ct-row li { font: italic 400 15px/1.5 var(--serif); padding-left: 14px; position: relative; cursor: pointer; }
+  .ct-row li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--cc); }
+  .ct-row li:hover { color: var(--cc); }
+
+  .gl-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .gl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+  .gl { text-align: left; border: 1px solid var(--rule); background: var(--card); border-radius: 10px; padding: 13px 14px; cursor: pointer; font-family: var(--sans); color: var(--ink); transition: border-color .15s, transform .15s; }
+  .gl:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .gl.idiom:hover { border-color: var(--green); }
+  .gl b { display: block; font: 600 16px/1.25 var(--display); margin-bottom: 4px; }
+  .gl span { font-size: 12.5px; line-height: 1.45; color: var(--ink-2); display: block; }
+  .gl em { font-style: normal; font: 700 9.5px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
+  .gl.idiom em { color: var(--green); }
+
+  .hero-key { max-width: 700px; margin: 0 auto; text-align: left; }
+
+  /* ───────── Slide deck mode ───────── */
+  .deck-nav { display: none; }
+  .next-card { display: none; }
+  body:not(.deck) .cover-link { display: none; }
+  body.deck { padding-bottom: 96px; }
+  body.deck .slide:not(.active) { display: none; }
+  body.deck.on-cover .layout { display: none; }
+  body.deck:not(.on-last) footer.page { display: none; }
+  body.deck .slide.active { animation: slidein .38s cubic-bezier(.2,.7,.2,1) both; }
+  body.deck.back .slide.active { animation-name: slidein-back; }
+  @keyframes slidein { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+  @keyframes slidein-back { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { body.deck .slide.active { animation: none; } }
+  body.deck .chapter, body.deck .study { padding-top: 40px; min-height: calc(100vh - 220px); }
+
+  body.deck .deck-nav {
+    display: flex; align-items: center; gap: 12px;
+    position: fixed; z-index: 60; left: 50%; bottom: 14px; transform: translateX(-50%);
+    width: min(640px, calc(100% - 24px)); padding: 8px;
+    background: color-mix(in srgb, var(--card) 92%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--rule); border-radius: 999px; box-shadow: 0 18px 40px -20px rgba(40,20,5,.45);
+    font-family: var(--sans);
+  }
+  .nav-btn { flex: none; width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--ink); color: var(--paper); font: 400 26px/1 var(--display); cursor: pointer; display: grid; place-items: center; padding-bottom: 3px; transition: transform .15s, opacity .15s; }
+  .nav-btn:hover:not(:disabled) { transform: scale(1.06); }
+  .nav-btn:disabled { opacity: .22; cursor: default; }
+  .nav-btn#next { background: var(--accent); color: var(--accent-ink); }
+  .nav-mid { flex: 1; min-width: 0; text-align: center; }
+  .nav-label { font-size: 12.5px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nav-label b { color: var(--accent); font-weight: 700; margin-right: 8px; font-variant-numeric: tabular-nums; }
+  .nav-label span { color: var(--ink); font-weight: 600; }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 7px; }
+  .dots button { width: 8px; height: 8px; padding: 0; border-radius: 99px; border: 0; background: var(--rule); cursor: pointer; transition: width .25s, background .25s; }
+  .dots button:hover { background: var(--ink-2); }
+  .dots button.on { width: 24px; background: var(--accent); }
+
+  body.deck .next-card {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%;
+    margin: 56px 0 8px; padding: 22px 26px; text-align: left; cursor: pointer;
+    background: var(--card); color: var(--ink); border: 1px solid var(--rule); border-radius: 16px;
+    font-family: var(--sans); transition: border-color .15s, transform .15s;
+  }
+  body.deck .next-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .next-card small { display: block; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .next-card b { font: 400 clamp(1.3rem, 3vw, 1.7rem)/1.15 var(--display); }
+  .next-card .arrow { flex: none; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font: 400 24px/1 var(--display); }
+  .hero .next-card { max-width: 700px; margin-left: auto; margin-right: auto; }
+  @media (max-width: 640px) { .nav-btn { width: 42px; height: 42px; } .nav-label b { margin-right: 5px; } }
+
+  footer.page { max-width: 700px; margin: 80px auto 0; padding: 30px 16px 60px; text-align: center; font: 400 12.5px/1.6 var(--sans); color: var(--ink-2); border-top: 1px solid var(--rule); }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="bar-title"><b>Sharing Books</b> · Rebecca Toh · <span id="readtime"></span></div>
+    <div class="controls" role="toolbar" aria-label="Reading options">
+      <button class="tg view-tg" id="view" aria-pressed="true" title="Switch between slides and one long page"><span class="dot"></span><span id="view-label">Slides</span></button>
+      <button class="tg" data-flag="cues" aria-pressed="true" title="Show speaker delivery cues"><span class="dot"></span>Cues</button>
+      <button class="tg" data-flag="grammar" aria-pressed="true" title="Highlight conditional sentences"><span class="dot"></span>Grammar</button>
+      <button class="tg" data-flag="vocab" aria-pressed="true" title="Underline vocabulary &amp; idioms"><span class="dot"></span>Words</button>
+      <button class="icon-btn" id="fs-down" aria-label="Smaller text">A−</button>
+      <button class="icon-btn" id="fs-up" aria-label="Larger text">A+</button>
+      <button class="icon-btn" id="theme" aria-label="Toggle dark mode">◐</button>
+    </div>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</div>
+
+<header class="hero" id="cover">
+  <div class="eyebrow">TED Talk <span class="sep">/</span> Rebecca Toh <span class="sep">/</span> Singapore</div>
+  <h1>How Sharing Books Makes You <em>Less Lonely</em></h1>
+  <p class="dek">180 strangers, 180 rented shelves, one volunteer-run library tucked between a furniture shop and an antique store. This is how it got built.</p>
+  <div class="meta">
+    <span id="readtime2">Annotated reading edition</span>
+    <a href="https://www.youtube.com/watch?v=81iS7JsTGmk" target="_blank" rel="noopener">▶ Watch the talk</a>
+  </div>
+
+  <div class="shelfwall" aria-hidden="true">
+    <div class="shelf-row"></div><div class="shelf-row"></div><div class="shelf-row"></div>
+    <div class="shelf-cap">Each spine is one of the 180 shelves, and each one belongs to a different person.</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>180</b><span>shelves, each rented by a different person</span></div>
+    <div class="stat"><b>S$45</b><span>a month to become a bookshelf owner</span></div>
+    <div class="stat"><b>~40</b><span>volunteer librarians</span></div>
+    <div class="stat"><b>300</b><span>messages on the first day</span></div>
+    <div class="stat"><b>3</b><span>months to build it</span></div>
+  </div>
+  <div class="hero-key">
+    <details class="key" open>
+      <summary>How to read this page</summary>
+      <div class="key-body">
+        <div>
+          <h5>Delivery cues</h5>
+          <div class="chips" style="font-size:16px">
+            <span class="cue sp">Short pause</span><span class="cue lp">Long pause</span><span class="cue beat">Beat</span><span class="cue emph">Emphasis</span><span class="cue laugh">Laughter</span><span class="cue slide">Show slide</span><span class="cue idiom">Idiom</span>
+          </div>
+          <p class="hint">Read the talk out loud and pause where the cues tell you to.</p>
+        </div>
+        <div>
+          <h5>Conditionals</h5>
+          <div class="chips" id="legend"></div>
+          <p class="hint">Tap a type to jump to each example in turn. Tap it again to go to the next one.</p>
+        </div>
+        <div>
+          <h5>Words</h5>
+          <p><span class="v" data-g="nestled" tabindex="-1" style="pointer-events:none">Dotted</span> = key vocabulary &nbsp;·&nbsp; <span class="v idiom" data-g="plunge" tabindex="-1" style="pointer-events:none">wavy</span> = idiom. Hover over or tap a word to see what it means.</p>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="Chapters">
+    <h4>Contents</h4>
+    <ol>
+      <li class="cover-link"><a href="#cover"><small>Start</small>Cover &amp; reading guide</a></li>
+      <li><a href="#ch1"><small>I</small>A library of 180 owners</a></li>
+      <li><a href="#ch2"><small>II</small>The spark in Japan</a></li>
+      <li><a href="#ch3"><small>III</small>One Instagram post</a></li>
+      <li><a href="#ch4"><small>IV</small>Meet the shelves</a></li>
+      <li><a href="#ch5"><small>V</small>Why it works</a></li>
+      <li><a href="#ch6"><small>VI</small>Community in every corner</a></li>
+      <li><a href="#grammar"><small>Study</small>Conditionals</a></li>
+      <li><a href="#glossary"><small>Study</small>Word bank</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <article class="prose" id="talk">
+
+      <!-- ───── I ───── -->
+      <section class="chapter" id="ch1">
+        <div class="ch-head"><div class="ch-num">Chapter I</div><h2>A library of <em>180 owners</em></h2></div>
+
+        <p><span class="cue sp">Short pause</span> A few months ago, <strong>180 passionate individuals</strong> came together in Singapore to build something rather extraordinary: a <span class="v" data-g="community-library">community library</span>.</p>
+
+        <p>In a city fortunate enough to already have a <span class="v" data-g="world-class">world-class</span>, highly innovative, and much-beloved public library system — of which I am a proud beneficiary — you might well ask, what makes our library truly distinct?<span class="cue beat">Beat</span></p>
+
+        <p><span class="cue lp">Long pause</span> <span class="cue slide">Show slide</span> This is the library we built.</p>
+
+        <p>We are <span class="v" data-g="nestled">nestled</span> in the <span class="v" data-g="heartlands">heartlands</span> of Singapore, <span class="cue sp">short pause</span> <span class="v" data-g="off-beaten">off the beaten track</span>, between a 50-year-old furniture shop and an antique store, surrounded by birds, trees, and — believe it or not — quite a few chickens. <span class="cue laugh">Laughter - pause</span></p>
+
+        <p>What we have created is what we call a <span class="v" data-g="shared-library">shared library</span>. There are <strong>180 shelves</strong>, each one rented, curated and maintained by a different person.<span class="cue emph">Emphasis</span></p>
+
+        <p>For just 45 Singapore dollars a month, you become a <span class="v" data-g="bookshelf-owner">bookshelf owner</span>. <span class="cue sp">Short pause</span> And being a bookshelf owner is an absolute delight. You get to share your <strong>favourite</strong> books, you curate your own tiny corner, and you refresh your collection whenever you fancy.</p>
+
+        <p>Not only do we house books, but we also house stories, identities, and memories. <span class="cond" data-c="A" data-label="Zero Conditional - A"><em>If you curate a shelf with genuine passion, it invariably reflects your personality.</em></span></p>
+
+        <blockquote class="pull">Every shelf in our library is like a little pocket universe — an intriguing, almost voyeuristic glimpse into someone’s heart and mind.</blockquote>
+
+        <p>If you wander through our aisles, you quite often find yourself pausing in front of a shelf thinking, "I think I know this person," even though you have never met them in your life. <span class="cond" data-c="B" data-label="First Conditional - B">If you visit us tomorrow, you will discover 180 entirely unique worlds.</span><span class="cue emph">Emphasis</span></p>
+
+        <p><span class="cue lp">Long pause</span> Another defining feature is that we are entirely <span class="v" data-g="volunteer-run">volunteer-run</span>. A dedicated roster of about 40 incredibly kind <span class="v" data-g="volunteer-librarians">volunteer librarians</span> takes turns to keep our doors open six days a week, twelve hours a day.</p>
+
+        <p>Some are bookshop owners with their own shelf. Others are simply neighbours who wanted to be part of something meaningful — doctors, former lawyers, students, mothers, freelancers, retirees. We even have a five-year-old librarian amongst us. We are all <span class="v" data-g="birds">birds of a feather</span>, and what binds us is simple.<span class="cue idiom">Idiom</span></p>
+
+        <blockquote class="pull">We love books, we believe in the transformative power of books, and we absolutely relish being surrounded by them.<footer><span class="cue emph">Emphasis</span></footer></blockquote>
+
+        <p>So, whenever we are open, anyone is welcome. Come in, sit down, read a book for free, make a genuine connection, enjoy a cup of coffee freshly brewed by a fellow reader, and just let the stress of modern life melt off your shoulders. <span class="cond" data-c="C" data-label="Second Conditional - C">If we had unlimited space, we would house thousands more narratives and welcome the whole neighbourhood.</span></p>
+      </section>
+
+      <!-- ───── II ───── -->
+      <section class="chapter" id="ch2">
+        <div class="ch-head"><div class="ch-num">Chapter II</div><h2>The spark <em>in Japan</em></h2></div>
+
+        <p>Now, how did this <span class="v" data-g="labour-of-love">labour of love</span> come about?</p>
+
+        <p>In April this year, I took a <span class="v nb" data-g="sabbatical">sabbatical</span> from my work as a photographer and travelled to Japan, where I stumbled upon a small, <span class="v" data-g="micro-library">participatory micro-library</span> with a remarkably similar concept. <span class="cue sp">Short pause</span> I was utterly captivated. There was something about that space that truly <span class="v nb" data-g="enticed">enticed</span> me.</p>
+
+        <p>Standing in that little library in Japan, even though I could not read a single Japanese title, I sensed a profoundly powerful energy of love and care. <span class="cond" data-c="D" data-label="Third Conditional - D"><em>If we hadn’t taken that <span class="v nb" data-g="leap">leap of faith</span> back in April, this grassroots initiative would never have materialised.</em></span><span class="cue emph">Emphasis</span></p>
+
+        <p>It was then I thought it would be wonderful to replicate something like this in Singapore. So I turned to social media to <span class="v nb" data-g="rally">rally the troops</span>.</p>
+
+        <p><span class="cond" data-c="E" data-label="Mixed Conditional - E a) Present Condition, Past Result">If we weren’t so utterly committed to <span class="v" data-g="stewardship">community stewardship</span>, we wouldn’t have secured this wonderful <span class="v" data-g="hyperlocal">hyperlocal</span> space earlier.</span></p>
+
+        <p><span class="cond" data-c="E" data-label="Mixed Conditional - E b) Past Condition, Present Result">If I hadn’t stumbled upon that Japanese micro-library, we wouldn’t be standing here today celebrating our <span class="v" data-g="bibliophilic">bibliophilic ecosystem</span>.</span></p>
+
+        <p><span class="cond" data-c="F" data-label="Future Conditional - F / Inversion for British advanced structure"><span class="cue lp">Long pause - Slow delivery</span> Were we to expand this <strong>shared library model</strong> to every heartland estate, we might just redefine Singapore’s reading culture altogether.</span> At the end of the day, it has become a real <span class="v" data-g="home-away">home away from home</span>.<span class="cue idiom">Idiom</span></p>
+      </section>
+
+      <!-- ───── III ───── -->
+      <section class="chapter" id="ch3">
+        <div class="ch-head"><div class="ch-num">Chapter III</div><h2>One <em>Instagram post</em></h2></div>
+
+        <p><span class="cue sp">Short pause</span> So I returned to Singapore and decided to put my <strong>vision</strong> out there. I drafted a simple <strong>Instagram post</strong> outlining what a small, <strong>shared library</strong> in Singapore could look like.</p>
+
+        <p>My thinking was quite straightforward. <span class="cond" data-c="C" data-label="Second Conditional - C">I thought if no one responded, I would simply forget about the whole idea. But if I could get 50 people on board, I would be delighted to give this rather impractical, dreamy, and idealistic notion a try.</span><span class="cue beat">Beat</span></p>
+
+        <p><span class="cue sp">Short pause</span> I finished writing, pressed post, and went straight back to work.</p>
+
+        <p>What happened next was quite <span class="v nb" data-g="wildest">beyond my wildest dreams</span>. Not only did people respond, but by the end of the very first day, I had received <strong>300 direct messages</strong> from people genuinely willing to put money down to rent a shelf and build a library together. <span class="cond" data-c="B" data-label="First Conditional - B"><em>If you come by on a Tuesday, you will meet Raymond and truly feel that same passion first-hand.</em></span></p>
+
+        <p>That night, I was incredibly moved. I <span class="v nb" data-g="sleeve">wore my heart on my sleeve</span> reading those messages — I could feel everyone’s sheer fire and passion. <span class="cond" data-c="A" data-label="Zero Conditional - A"><strong><em>If people share a common vision, a community flourishes.</em></strong></span></p>
+
+        <p>Living in Singapore, where life is so practical and <span class="v nb" data-g="pragmatic">pragmatic</span>, this felt like a moment of collective <span class="v" data-g="jailbreak">jailbreak</span>. It was as if many people had just been waiting for the right moment to do something meaningful together. What struck me most was the realisation that so many people still care deeply about books.<span class="cue idiom">Idiom</span></p>
+
+        <p class="moment"><span class="cue lp">Long pause</span><br>So I decided to <span class="v" data-g="plunge">take the plunge</span>. <span class="cue idiom">Idiom - Emphasis: take the plunge</span></p>
+
+        <p>Three days after the post, I found a space to rent. On the fourth day, I signed the lease. I am an Aquarius, so I tend to follow my intuition. <span class="cue laugh">Laughter - pause</span></p>
+
+        <p><span class="cond" data-c="D" data-label="Third Conditional - D">If I hadn’t posted that vision on Instagram, none of this collective <span class="v nb" data-g="endeavour">endeavour</span> would have ever <span class="v nb" data-g="materialised">materialised</span>.</span></p>
+
+        <p>With the help of many people — most of them complete strangers at the time — we built our <span class="v" data-g="grassroots">grassroots library</span> in just three months. <span class="cue slide">Show slide - Emphasis: literally building</span> This is a picture of us literally building it — installing the flooring together.</p>
+      </section>
+
+      <!-- ───── IV ───── -->
+      <section class="chapter" id="ch4">
+        <div class="ch-head"><div class="ch-num">Chapter IV</div><h2>Meet <em>the shelves</em></h2></div>
+
+        <p><span class="cue sp">Short pause</span> So who are these 180 wonderful individuals who decided to do this with me?</p>
+
+        <div class="shelf-card">
+          <div class="shelf-label"><span class="mini"></span>Raymond · CDs &amp; Japan</div>
+          <p>This is <strong>Raymond’s shelf</strong>. Raymond is passionate about collecting CDs and books about Japan — those are the two treasures you will find on his shelf. Every Tuesday, he sets up a little stall outside our library where he sells his <span class="v" data-g="second-hand">second-hand</span> collection. <span class="cond" data-c="C" data-label="Second Conditional - C variant">If I had more time, I would curate a shelf entirely on analogue culture just like his.</span> He also brews <span class="v" data-g="pwyw">pay-as-you-wish</span> coffee for anyone who drops by.</p>
+        </div>
+
+        <div class="shelf-card">
+          <div class="shelf-label"><span class="mini"></span>Wanqi &amp; Liam · mother and son</div>
+          <p>This is Wanqi and Liam — mother and son. Liam is the five-year-old librarian I mentioned earlier. <span class="cue sp">Short pause</span> So far, we have been thoroughly impressed by his work ethic. Their shelf is split equally — half features Liam’s <strong>favourite</strong> children’s books, fostering wonderful <span class="v" data-g="intergen">intergenerational literacy</span>, and half showcases Wanqi’s collection. Liam decorated it himself. It looks absolutely brilliant.<span class="cue laugh">Laughter</span></p>
+        </div>
+
+        <div class="shelf-card">
+          <div class="shelf-label"><span class="mini"></span>The Kin San shelf · Hong Kong</div>
+          <p>And this particular <strong>bookshelf owner</strong> decided to preserve a piece of history. She has shared books that once sat on the shelves of <strong>Kin San</strong>, a much-loved Hong Kong bookshop that has sadly closed down. She has even replicated a miniature version of the banner that used to hang outside Kin San, which reads, “ideas are bulletproof.”</p>
+        </div>
+
+        <blockquote class="pull">In a way, Kin San lives on right here inside our library.<footer><span class="cue emph">Emphasis - Slow delivery</span></footer></blockquote>
+
+        <div class="shelf-card">
+          <div class="shelf-label"><span class="mini"></span>Mira · letters &amp; a mailbox</div>
+          <p>This is Mira. Mira is a preschool teacher who champions <span class="v" data-g="cultural-preservation">cultural preservation</span>. She firmly believes in the power of letter writing, especially for children, which is why you will find a little mailbox on her shelf. So, apart from enjoying the amazing selection of books she has curated, you can also write her a letter. <span class="ctag solo" data-c="E">Mixed Conditional - E</span></p>
+        </div>
+
+        <p><span class="cond" data-c="E" data-label="Mixed - a) Present Condition, Past Result">If I weren’t an Aquarius who follows her intuition, I wouldn’t have signed that lease on day four.</span></p>
+
+        <p><span class="cond" data-c="E" data-label="Mixed - b) Past Condition, Present Result">If we hadn’t built this together as strangers, we wouldn’t be a family of bibliophiles today.</span></p>
+
+        <p><span class="cond" data-c="F" data-label="Future Conditional - F / British Inversion"><span class="cue lp">Long pause</span> Were we to crowdfund a second branch next year, we might turn this dream into a city-wide movement.</span> And <span class="v nb" data-g="against">against all odds</span>, <span class="v nb" data-g="history">the rest, as they say, is history</span>.</p>
+
+        <p><span class="cue sp">Short pause</span> She has promised that she will definitely write back to you.</p>
+      </section>
+
+      <!-- ───── V ───── -->
+      <section class="chapter" id="ch5">
+        <div class="ch-head"><div class="ch-num">Chapter V</div><h2>Why it <em>works</em></h2></div>
+
+        <p>One of the most frequent questions we are asked is how this <span class="v" data-g="community-owned">community-owned library</span> stays open. <span class="v nb" data-g="face">On the face of it</span>, it does not make economic sense.<span class="cue sp">Short pause</span><span class="cue beat">Beat</span></p>
+
+        <p>The simple answer is this: <strong>180 people</strong> decided to <span class="v" data-g="pull-together">pull together</span> to build a <span class="v" data-g="grassroots">grassroots book space</span> for the local community. <span class="cue emph">Emphasis: pull together</span></p>
+
+        <p>What is truly remarkable is that this <span class="v" data-g="collective-ownership">collective ownership</span> model is actually highly practical. <span class="cond" data-c="A" data-label="Zero Conditional - A"><strong><em>If you share resources freely, trust grows naturally.</em></strong></span> We share the rent between 180 people, so no single person bears the <span class="v" data-g="burden">financial burden</span> of keeping this space open.</p>
+
+        <p>The other question we are often asked is, what do we gain from doing this? Well, we certainly do not get paid in the traditional financial sense.</p>
+
+        <p>But we have been open for about four months now, and for many of us, this library has become a rare <span class="v" data-g="home-from-home">home from home</span>. On most days, our library also doubles as a <strong>community centre</strong> — a genuine <span class="v" data-g="third-place">third place</span>. Apart from the usual book clubs and women’s sharing circles, people have hosted curry nights and hot-pot nights for 40 people. <span class="cue sp">Short pause</span><span class="cue idiom">Idiom</span></p>
+
+        <p><span class="cond" data-c="B" data-label="First Conditional - B">If you visit our <span class="v" data-g="midnight">midnight library</span>, which we run twice a month, you will feel that sense of belonging immediately.</span> We remain open until late — or at least until the last person wishes to stay.</p>
+      </section>
+
+      <!-- ───── VI ───── -->
+      <section class="chapter" id="ch6">
+        <div class="ch-head"><div class="ch-num">Chapter VI</div><h2>Community in <em>every corner</em></h2></div>
+
+        <p class="moment">I see <strong>community</strong> in every corner of our little library.</p>
+
+        <p>I see it in the people who bring food, drinks, ideas, and resources to freely share with one another. <span class="cond" data-c="C" data-label="Second Conditional - C">If we charged late fees, people might not rush to return books so eagerly.</span> Yet they do. I believe it is because they can sense the love and care poured into every shelf, and because they genuinely want others to have access to the books.</p>
+
+        <p><span class="cond" data-c="E" data-label="Mixed Conditional - E b) Past Condition, Present Result">If 180 people hadn’t decided to take the plunge, we wouldn’t have this home today.</span></p>
+
+        <p>I see community in the little children who come in. They remind each other to take care of the books, not to bend the pages, and to put each book back in its rightful place.</p>
+
+        <p>I see community in our <strong>volunteer librarians</strong>, who pour their <span class="v" data-g="heart-soul">heart and soul</span> into cleaning the library, cataloguing books, and ensuring the library remains a welcoming <span class="v" data-g="social-infra">social infrastructure</span> for everyone. <span class="cue idiom">Idiom - Emphasis: heart and soul</span> <span class="cond" data-c="E" data-label="Mixed Conditional - E a) Present Condition, Past Result">If we weren’t so deeply rooted in <span class="v" data-g="vol-stewardship">volunteer stewardship</span>, we wouldn’t have built such strong <span class="v" data-g="social-capital">social capital</span> so quickly.</span></p>
+
+        <p><span class="cue lp">Long pause - Slow delivery</span> And because of all this, Singapore feels a little different to me these days. It feels a little more generous, warm, open, kind, joyful, and trusting.</p>
+
+        <p>In a world where people feel increasingly lonely and society feels increasingly <span class="v nb" data-g="fragmented">fragmented</span>, this little library has given us — or at least it has given me — a feeling of power. <span class="cond" data-c="D" data-label="Third Conditional - D">If we had relied on a traditional commercial model, this space would have closed within months.</span></p>
+
+        <p>Not the kind of power that is heavy and destructive, but the kind of power that is light and <span class="v" data-g="regenerative">regenerative</span>.</p>
+
+        <p><span class="cond" data-c="F" data-label="Future Conditional - F / Inversion - British Advanced Structure"><span class="cue lp">Long pause - Emphasis</span> <em>Were we to replicate this <span class="v" data-g="commons">commons-based model</span> across Singapore, we might fundamentally reshape the city’s social fabric.</em></span></p>
+
+        <div class="finale">
+          <p class="big">This little library has given me renewed hope that we do have the power to come together to build what we believe is missing in our lives, in our city, in our world.</p>
+          <p class="close">And sometimes, that missing thing is a small, shared, <strong>community-owned library</strong> — a true <strong class="v" data-g="labour-of-love">labour of love</strong>.</p>
+          <div class="end">❦</div>
+        </div>
+      </section>
+    </article>
+
+    <!-- ───── Study: conditionals ───── -->
+    <section class="study" id="grammar">
+      <header>
+        <div class="ch-num">Study</div>
+        <h3>Conditionals in this talk</h3>
+        <p class="sub">Every highlighted <i>if</i> sentence from the talk, grouped by type. Tap a sentence to jump back to it in the text.</p>
+      </header>
+      <div class="cond-table" id="cond-table"></div>
+    </section>
+
+    <!-- ───── Study: glossary ───── -->
+    <section class="study" id="glossary">
+      <header>
+        <div class="ch-num">Study</div>
+        <h3>Word bank</h3>
+        <p class="sub">Vocabulary and idioms from the talk. Tap a card to see the word where it is used.</p>
+      </header>
+      <div class="gl-tabs">
+        <button class="tg" data-gl="all" aria-pressed="true">All</button>
+        <button class="tg" data-gl="vocab" aria-pressed="false">Vocabulary</button>
+        <button class="tg" data-gl="idiom" aria-pressed="false">Idioms</button>
+      </div>
+      <div class="gl-grid" id="gl-grid"></div>
+    </section>
+  </main>
+  <div></div>
+</div>
+
+<footer class="page">
+  Transcript of <i>How Sharing Books Makes You Less Lonely</i> by Rebecca Toh, TED.<br>
+  Delivery cues and grammar notes were added for English speaking practice.
+</footer>
+
+<nav class="deck-nav" aria-label="Slides">
+  <button class="nav-btn" id="prev" aria-label="Previous slide">‹</button>
+  <div class="nav-mid">
+    <div class="nav-label"><b id="nav-count"></b><span id="nav-title"></span></div>
+    <div class="dots" id="dots"></div>
+  </div>
+  <button class="nav-btn" id="next" aria-label="Next slide">›</button>
+</nav>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+(function () {
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  var root = document.documentElement, body = document.body;
+
+  /* ── Data ── */
+  var COND = {
+    A: { name: 'Zero',      full: 'Zero conditional',   form: 'If + present, present',                      use: 'General truths. When this happens, that always follows.' },
+    B: { name: '1st',       full: 'First conditional',  form: 'If + present, will + verb',                  use: 'A real, likely future result.' },
+    C: { name: '2nd',       full: 'Second conditional', form: 'If + past, would / might + verb',            use: 'Imagined or unlikely situations in the present or future.' },
+    D: { name: '3rd',       full: 'Third conditional',  form: 'If + had + past participle, would have + past participle', use: 'An imagined past: how things could have turned out differently.' },
+    E: { name: 'Mixed',     full: 'Mixed conditional',  form: 'If + past perfect, would + verb  /  If + past, would have + past participle', use: 'The condition and the result happen at different times.' },
+    F: { name: 'Inversion', full: 'Inverted conditional', form: 'Were + subject + to + verb, might / would + verb', use: 'A formal, British-sounding hypothetical with no “if”.' }
+  };
+
+  var G = {
+    'community-library': ['community library', 'v', 'A library that local people set up and run for their own neighbourhood.'],
+    'world-class': ['world-class', 'v', 'Among the best in the world.'],
+    'nestled': ['nestled', 'v', 'Sitting in a sheltered, cosy spot.'],
+    'heartlands': ['heartlands', 'v', 'In Singapore, the residential towns outside the city centre, where most people live.'],
+    'off-beaten': ['off the beaten track', 'i', 'Away from busy, popular places.'],
+    'shared-library': ['shared library', 'v', 'A library whose books come from many different owners.'],
+    'bookshelf-owner': ['bookshelf owner', 'v', 'A person who rents one shelf and chooses the books on it.'],
+    'volunteer-run': ['volunteer-run', 'v', 'Run by people who are not paid.'],
+    'volunteer-librarians': ['volunteer librarians', 'v', 'Unpaid helpers who look after the library.'],
+    'birds': ['birds of a feather', 'i', 'People who share the same interests or character. It comes from the saying “birds of a feather flock together”.'],
+    'labour-of-love': ['labour of love', 'i', 'Hard work you do because you love it, not for money.'],
+    'sabbatical': ['sabbatical', 'v', 'A long break from your usual job.'],
+    'micro-library': ['participatory micro-library', 'v', 'A tiny library where visitors take part by adding books.'],
+    'enticed': ['enticed', 'v', 'Strongly attracted or tempted.'],
+    'leap': ['leap of faith', 'i', 'Acting even though you cannot be sure how things will turn out.'],
+    'rally': ['rally the troops', 'i', 'Bring people together for a shared effort.'],
+    'stewardship': ['community stewardship', 'v', 'A community taking responsible care of something on behalf of everyone.'],
+    'hyperlocal': ['hyperlocal', 'v', 'Focused on a very small area, such as one neighbourhood.'],
+    'bibliophilic': ['bibliophilic ecosystem', 'v', 'A whole network of book lovers (a bibliophile is someone who loves books).'],
+    'home-away': ['home away from home', 'i', 'A place where you feel as comfortable as you do at home.'],
+    'home-from-home': ['home from home', 'i', 'The British form of “home away from home”: a place that feels like home.'],
+    'wildest': ['beyond my wildest dreams', 'i', 'Better than anything you could have imagined.'],
+    'sleeve': ['wear your heart on your sleeve', 'i', 'Show your feelings openly.'],
+    'pragmatic': ['pragmatic', 'v', 'Dealing with things in a sensible, practical way.'],
+    'jailbreak': ['jailbreak', 'v', 'An escape. Here it means a joyful break from everyday routine.'],
+    'plunge': ['take the plunge', 'i', 'Finally decide to do something bold or risky.'],
+    'endeavour': ['endeavour', 'v', 'A serious effort to achieve something.'],
+    'materialised': ['materialised', 'v', 'Became real; actually happened.'],
+    'grassroots': ['grassroots', 'v', 'Started by ordinary people rather than by leaders or organisations.'],
+    'second-hand': ['second-hand', 'v', 'Owned by someone else before.'],
+    'pwyw': ['pay-as-you-wish', 'v', 'You pay whatever amount you choose.'],
+    'intergen': ['intergenerational literacy', 'v', 'Reading that is shared between generations, such as a parent and a child.'],
+    'cultural-preservation': ['cultural preservation', 'v', 'Protecting traditions and heritage so they don’t disappear.'],
+    'against': ['against all odds', 'i', 'Even though success seemed very unlikely.'],
+    'history': ['the rest is history', 'i', 'You already know what happened next.'],
+    'community-owned': ['community-owned', 'v', 'Owned together by the members of a community.'],
+    'face': ['on the face of it', 'i', 'At first sight; judging by how something looks.'],
+    'pull-together': ['pull together', 'i', 'Work together to achieve something.'],
+    'collective-ownership': ['collective ownership', 'v', 'When many people own something together.'],
+    'burden': ['financial burden', 'v', 'A cost that is difficult to carry.'],
+    'third-place': ['third place', 'v', 'A social space apart from home (the first place) and work (the second), such as a café or library.'],
+    'midnight': ['midnight library', 'v', 'The library’s late-night opening, held twice a month.'],
+    'heart-soul': ['heart and soul', 'i', 'All your energy and passion.'],
+    'social-infra': ['social infrastructure', 'v', 'Places and services that help people connect with each other.'],
+    'vol-stewardship': ['volunteer stewardship', 'v', 'Looking after something through volunteer work.'],
+    'social-capital': ['social capital', 'v', 'The relationships and trust within a community.'],
+    'fragmented': ['fragmented', 'v', 'Broken into separate parts that are not connected.'],
+    'regenerative': ['regenerative', 'v', 'Renewing and restoring rather than using up.'],
+    'commons': ['commons-based model', 'v', 'A model where a community shares and manages resources together.']
+  };
+
+  /* ── Hero bookshelf: 180 spines ── */
+  var palette = ['#b5502b','#2f6153','#8a5a36','#c99a3c','#3d5a80','#7a4b6e','#5c7a4a','#a33b3b','#d4b483','#466b78','#6b4f3a','#9c6b98'];
+  var rows = document.querySelectorAll('.shelf-row'), n = 0;
+  rows.forEach(function (row) {
+    for (var i = 0; i < 60; i++) {
+      var s = document.createElement('i');
+      s.className = 'spine' + (Math.random() < .03 ? ' lean' : '');
+      s.style.setProperty('--w', (5 + Math.random() * 7).toFixed(1));
+      s.style.setProperty('--h', (62 + Math.random() * 36).toFixed(0) + '%');
+      s.style.setProperty('--c', palette[(Math.random() * palette.length) | 0]);
+      s.style.setProperty('--d', (n * 6) + 'ms');
+      row.appendChild(s); n++;
+    }
+  });
+  document.querySelectorAll('.mini').forEach(function (m) {
+    for (var i = 0; i < 6; i++) {
+      var b = document.createElement('i');
+      b.style.setProperty('--c', palette[(Math.random() * palette.length) | 0]);
+      b.style.setProperty('--h', (55 + Math.random() * 45).toFixed(0) + '%');
+      m.appendChild(b);
+    }
+  });
+
+  /* ── Reading time ── */
+  var words = document.getElementById('talk').innerText.split(/\s+/).length;
+  var mins = Math.max(1, Math.round(words / 200));
+  document.getElementById('readtime').textContent = mins + ' min read';
+  document.getElementById('readtime2').textContent = '≈ ' + mins + ' min read · ' + words.toLocaleString() + ' words';
+
+  /* ── Conditional tags ── */
+  var conds = Array.prototype.slice.call(document.querySelectorAll('#talk .cond'));
+  conds.forEach(function (el) {
+    var c = COND[el.dataset.c], tag = document.createElement('span');
+    tag.className = 'ctag';
+    tag.setAttribute('aria-hidden', 'true');
+    tag.textContent = el.dataset.label;
+    el.insertBefore(tag, el.firstChild);
+    el.title = c.full;
+  });
+
+  /* ── Legend chips (cycle through occurrences) ── */
+  var legend = document.getElementById('legend'), cursor = {}, focusTimer;
+  Object.keys(COND).forEach(function (k) {
+    var list = conds.filter(function (e) { return e.dataset.c === k; });
+    var b = document.createElement('button');
+    b.className = 'legend-chip'; b.dataset.c = k;
+    b.style.setProperty('--cc', 'var(--c' + k + ')');
+    b.innerHTML = '<i></i>' + COND[k].full + ' <small>×' + list.length + '</small>';
+    b.addEventListener('click', function () {
+      if (body.classList.contains('no-grammar')) setFlag('grammar', true);
+      cursor[k] = ((cursor[k] == null ? -1 : cursor[k]) + 1) % list.length;
+      conds.forEach(function (e) { e.classList.toggle('focus', e.dataset.c === k); });
+      body.classList.add('focusing');
+      jump(list[cursor[k]]);
+      clearTimeout(focusTimer);
+      focusTimer = setTimeout(function () { body.classList.remove('focusing'); }, 6000);
+    });
+    legend.appendChild(b);
+  });
+
+  function jump(el) {
+    var p = el.closest('p, blockquote, .shelf-card') || el;
+    var s = el.closest('.slide');
+    if (body.classList.contains('deck') && s && slides.indexOf(s) !== cur) go(slides.indexOf(s), true);
+    p.scrollIntoView({ block: 'center' });
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  }
+
+  /* ── Conditional summary table ── */
+  var table = document.getElementById('cond-table');
+  Object.keys(COND).forEach(function (k) {
+    var c = COND[k], list = conds.filter(function (e) { return e.dataset.c === k; });
+    var row = document.createElement('div');
+    row.className = 'ct-row'; row.style.setProperty('--cc', 'var(--c' + k + ')');
+    row.innerHTML = '<div class="ct-top"><b>' + c.full + '</b><code>' + c.form + '</code></div><p class="ct-use">' + c.use + '</p><ul></ul>';
+    var ul = row.querySelector('ul');
+    list.forEach(function (e) {
+      var li = document.createElement('li');
+      var clone = e.cloneNode(true);
+      clone.querySelectorAll('.ctag, .cue').forEach(function (x) { x.remove(); });
+      li.textContent = clone.textContent.trim();
+      li.tabIndex = 0;
+      li.addEventListener('click', function () { jump(e); });
+      li.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') jump(e); });
+      ul.appendChild(li);
+    });
+    table.appendChild(row);
+  });
+
+  /* ── Vocabulary: tooltips ── */
+  var tip = document.getElementById('tip'), tipFor = null;
+  var vocabEls = Array.prototype.slice.call(document.querySelectorAll('#talk .v'));
+  vocabEls.forEach(function (el) {
+    var g = G[el.dataset.g]; if (!g) return;
+    if (g[1] === 'i') el.classList.add('idiom');
+    el.tabIndex = 0; el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', el.textContent + ': ' + g[2]);
+  });
+  document.querySelectorAll('.key .v').forEach(function (el) { if (G[el.dataset.g] && G[el.dataset.g][1] === 'i') el.classList.add('idiom'); });
+
+  function showTip(el) {
+    if (body.classList.contains('no-vocab')) return;
+    var g = G[el.dataset.g]; if (!g) return;
+    tip.innerHTML = '<em>' + (g[1] === 'i' ? 'Idiom' : 'Vocabulary') + '</em><b>' + g[0] + '</b>' + g[2];
+    tip.classList.add('show'); tipFor = el;
+    var r = el.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
+    var x = Math.min(Math.max(12, r.left + r.width / 2 - tw / 2), window.innerWidth - tw - 12);
+    var y = r.top - th - 10; if (y < 70) y = r.bottom + 10;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function hideTip() { tip.classList.remove('show'); tipFor = null; }
+  document.addEventListener('mouseover', function (e) { var v = e.target.closest('#talk .v'); if (v) showTip(v); });
+  document.addEventListener('mouseout', function (e) { if (e.target.closest('#talk .v')) hideTip(); });
+  document.addEventListener('focusin', function (e) { var v = e.target.closest('#talk .v'); if (v) showTip(v); });
+  document.addEventListener('focusout', hideTip);
+  document.addEventListener('click', function (e) {
+    var v = e.target.closest('#talk .v');
+    if (v) { tipFor === v ? hideTip() : showTip(v); } else hideTip();
+  });
+  window.addEventListener('scroll', function () { if (tipFor) hideTip(); }, { passive: true });
+
+  /* ── Glossary ── */
+  var grid = document.getElementById('gl-grid');
+  Object.keys(G).forEach(function (id) {
+    var g = G[id], first = vocabEls.find(function (e) { return e.dataset.g === id; });
+    if (!first) return;
+    var b = document.createElement('button');
+    b.className = 'gl' + (g[1] === 'i' ? ' idiom' : ''); b.dataset.type = g[1] === 'i' ? 'idiom' : 'vocab';
+    b.innerHTML = '<em>' + (g[1] === 'i' ? 'Idiom' : 'Vocabulary') + '</em><b>' + g[0] + '</b><span>' + g[2] + '</span>';
+    b.addEventListener('click', function () { jump(first); });
+    grid.appendChild(b);
+  });
+  document.querySelectorAll('[data-gl]').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('[data-gl]').forEach(function (o) { o.setAttribute('aria-pressed', o === t); });
+      grid.querySelectorAll('.gl').forEach(function (c) { c.hidden = t.dataset.gl !== 'all' && c.dataset.type !== t.dataset.gl; });
+    });
+  });
+
+  /* ── Toggles ── */
+  function setFlag(flag, on) {
+    body.classList.toggle('no-' + flag, !on);
+    var btn = document.querySelector('.tg[data-flag="' + flag + '"]');
+    if (btn) btn.setAttribute('aria-pressed', on);
+    store.set('sl-' + flag, on ? '1' : '0');
+    if (!on && flag === 'vocab') hideTip();
+  }
+  ['cues', 'grammar', 'vocab'].forEach(function (f) { if (store.get('sl-' + f) === '0') setFlag(f, false); });
+  document.querySelectorAll('.tg[data-flag]').forEach(function (b) {
+    b.addEventListener('click', function () { setFlag(b.dataset.flag, b.getAttribute('aria-pressed') !== 'true'); });
+  });
+
+  /* ── Font size ── */
+  var fs = parseFloat(store.get('sl-fs')) || 1.18;
+  function applyFs() { root.style.setProperty('--fs', fs + 'rem'); store.set('sl-fs', fs); }
+  if (store.get('sl-fs')) applyFs();
+  document.getElementById('fs-up').onclick = function () { fs = Math.min(1.6, +(fs + .08).toFixed(2)); applyFs(); };
+  document.getElementById('fs-down').onclick = function () { fs = Math.max(.94, +(fs - .08).toFixed(2)); applyFs(); };
+
+  /* ── Theme ── */
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  function isDark() { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : mq.matches; }
+  function themeIcon() { document.getElementById('theme').textContent = isDark() ? '☀' : '☾'; }
+  document.getElementById('theme').onclick = function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next); store.set('sl-theme', next); themeIcon();
+  };
+  themeIcon();
+
+  /* ── Slide deck: cover · chapters I–VI · conditionals · word bank ── */
+  var slides = [document.getElementById('cover')].concat(Array.prototype.slice.call(document.querySelectorAll('.chapter, .study')));
+  var titles = slides.map(function (s, i) {
+    if (i === 0) return 'Cover';
+    var h = s.querySelector('h2, h3'); return h ? h.textContent : '';
+  });
+  var labels = slides.map(function (s, i) {
+    if (i === 0) return 'Start';
+    var n = s.querySelector('.ch-num'); return n ? n.textContent : '';
+  });
+  var cur = 0, total = slides.length;
+  var dots = document.getElementById('dots'), prevBtn = document.getElementById('prev'), nextBtn = document.getElementById('next');
+
+  slides.forEach(function (s, i) {
+    s.classList.add('slide');
+    var d = document.createElement('button');
+    d.setAttribute('aria-label', 'Go to slide ' + (i + 1) + ': ' + titles[i]);
+    d.title = titles[i];
+    d.addEventListener('click', function () { go(i); });
+    dots.appendChild(d);
+    if (i < total - 1) {
+      var nc = document.createElement('button');
+      nc.className = 'next-card';
+      nc.innerHTML = '<span><small>Next · ' + labels[i + 1] + '</small><b>' + titles[i + 1] + '</b></span><span class="arrow">›</span>';
+      nc.addEventListener('click', function () { go(i + 1); });
+      s.appendChild(nc);
+    }
+  });
+
+  var links = {};
+  document.querySelectorAll('.toc a').forEach(function (a) {
+    var id = a.getAttribute('href').slice(1); links[id] = a;
+    a.addEventListener('click', function (e) {
+      if (!body.classList.contains('deck')) return;
+      e.preventDefault();
+      go(slides.indexOf(document.getElementById(id)));
+    });
+  });
+  function markToc(id) { Object.keys(links).forEach(function (k) { links[k].classList.toggle('on', k === id); }); }
+
+  function go(i, keepScroll) {
+    if (i < 0 || i >= total) return;
+    body.classList.toggle('back', i < cur);
+    slides[cur].classList.remove('active');
+    cur = i;
+    var s = slides[cur];
+    s.classList.remove('active'); void s.offsetWidth; s.classList.add('active');
+    body.classList.toggle('on-cover', cur === 0);
+    body.classList.toggle('on-last', cur === total - 1);
+    document.getElementById('nav-count').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('nav-title').textContent = titles[cur];
+    dots.querySelectorAll('button').forEach(function (d, k) { d.classList.toggle('on', k === cur); d.setAttribute('aria-current', k === cur ? 'step' : 'false'); });
+    prevBtn.disabled = cur === 0; nextBtn.disabled = cur === total - 1;
+    markToc(s.id);
+    hideTip();
+    try { history.replaceState(null, '', '#' + s.id); } catch (e) {}
+    store.set('sl-slide', s.id);
+    if (!keepScroll) window.scrollTo(0, 0);
+    onScroll();
+  }
+  prevBtn.addEventListener('click', function () { go(cur - 1); });
+  nextBtn.addEventListener('click', function () { go(cur + 1); });
+
+  document.addEventListener('keydown', function (e) {
+    if (!body.classList.contains('deck') || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target.closest && e.target.closest('input, textarea, select')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+  });
+
+  var tx = null, ty = 0;
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) { tx = null; return; }
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (tx == null || !body.classList.contains('deck')) return;
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    tx = null;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.8) go(cur + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  /* ── Slides ⇄ scroll view ── */
+  var viewBtn = document.getElementById('view');
+  function setDeck(on) {
+    body.classList.toggle('deck', on);
+    viewBtn.setAttribute('aria-pressed', on);
+    document.getElementById('view-label').textContent = on ? 'Slides' : 'Scroll';
+    store.set('sl-deck', on ? '1' : '0');
+    if (on) { go(cur, true); window.scrollTo(0, 0); }
+    else {
+      slides.forEach(function (s) { s.classList.remove('active'); });
+      body.classList.remove('on-cover', 'on-last');
+      if (cur > 0) slides[cur].scrollIntoView();
+    }
+    onScroll();
+  }
+  viewBtn.addEventListener('click', function () {
+    if (!body.classList.contains('deck')) {
+      // open the slide the reader is currently looking at
+      var mid = innerHeight * .4;
+      slides.forEach(function (s, i) { if (s.getBoundingClientRect().top < mid) cur = i; });
+    }
+    setDeck(!body.classList.contains('deck'));
+  });
+
+  /* ── Progress + TOC (scroll view) ── */
+  var prog = document.getElementById('prog'), ticking = false;
+  function onScroll() {
+    var h = document.documentElement.scrollHeight - innerHeight;
+    var f = h > 0 ? Math.min(1, scrollY / h) : 1;
+    var pct = body.classList.contains('deck') ? ((cur + f) / total) * 100 : f * 100;
+    prog.style.width = pct + '%';
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (body.classList.contains('deck')) return;
+      entries.forEach(function (en) { if (en.isIntersecting) markToc(en.target.id); });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('.chapter, .study').forEach(function (s) { io.observe(s); });
+  }
+
+  /* ── Start: hash → last visited slide → cover ── */
+  var startId = (location.hash || '').slice(1) || store.get('sl-slide');
+  var startIdx = slides.indexOf(document.getElementById(startId));
+  cur = startIdx > 0 ? startIdx : 0;
+  setDeck(store.get('sl-deck') !== '0');
+})();
+</script>
+</body>
+</html>
